@@ -13,18 +13,20 @@ class OsInT_Sc4N3r(object):
     
     def enumerate_subdomains(self):
         print("[*] Enumeration subdomains process starting... [*]")
-        if self.logs == 'Y' or 'y':
+        if self.logs == 'Y' or self.logs == 'y':
             enumerate_command = 'echo '+self.domain+' | haktrails subdomains >> results/result_haktrails_'+self.domain+'.txt'
             print("[*] Haktrails execute process starting... [*]")
             sleep(2)
             popen(enumerate_command)
-            print('[+] Haktrails scan finished...')
-        else:
+            print('[+] Haktrails scan finished... [+]')
+        elif self.logs == 'N' or self.logs == 'n':
             enumerate_command = 'echo '+self.domain+' | haktrails subdomains'
             print("[*] Haktrails execute process starting... [*]")
             sleep(2)
             popen(enumerate_command)
-            print('[+] Haktrails scan finished...')
+            print('[+] Haktrails scan finished... [+]')
+        else:
+            print("[-] Unknown Option [-]")
 
 print("""\
 
