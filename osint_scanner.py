@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #
 # OsInT Sc4N3r - Tool for automated recon process on bug bounty
-# by: Israel Comazzetto dos Reis [@z3xddd]
+# @author: Israel C. dos Reis [@z3xddd]
 
 from os import popen
 from time import sleep
@@ -41,7 +41,7 @@ print("""\
                                                                    
 #################################################################################################################                                                                   
                                                                    Tool for automated recon process on Bug Bounty
-                                                                                                      by: @z3xddd
+                                                                                 by: Israel C. dos Reis [@z3xddd]
     """)
 user_domain_input = str(input("[+] Enter domain to scan >>  [ EX: domain.com.br ]  "))
 user_log_input = str(input("[+] Store the output in a text file? [ Write (Y) / (y) or (N) / (n) ] >>  "))
