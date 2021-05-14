@@ -7,29 +7,32 @@ from os import popen
 from time import sleep
 
 class OsInT_Sc4N3r(object):
-    def __init__(self, domain, logs):
+    def __init__(self, domain):
         self.domain = domain
-        self.logs = logs
     
-    def enumerate_subdomains(self):
-        print("[*] Enumeration subdomains process starting... [*]")
-        if self.logs == 'Y' or self.logs == 'y':
-            enumerate_command = 'echo '+self.domain+' | haktrails subdomains >> results/result_haktrails_'+self.domain+'.txt'
-            print("[*] Haktrails execute process starting... [*]")
-            sleep(2)
-            popen(enumerate_command)
-            print('[+] Haktrails scan finished... [+]')
-        elif self.logs == 'N' or self.logs == 'n':
-            enumerate_command = 'echo '+self.domain+' | haktrails subdomains'
-            print("[*] Haktrails execute process starting... [*]")
-            sleep(2)
-            popen(enumerate_command)
-            print('[+] Haktrails scan finished... [+]')
-        else:
-            print("[-] Unknown Option [-]")
+    def enumerate_subdomains_assetfinder(self):
+        enumerate_command = 'assetfinder -subs-only '+self.domain+' >> results/result_assetfinder_'+self.domain+'.txt'
+        print("[*] Assetfinder execute process starting... [*]")
+        popen(enumerate_command)
+        print('[+] Assetfinder scan finished... See details on results/result_assetfinder_'+self.domain+'.txt [+]')
+
+    def enumerate_webservers(self):
+        enumerate_command = 'cat results/result_assetfinder_'+self.domain+'.txt | httpx --silent > results/result_httpx_'+self.domain+'.txt'
+        enumerate_command2 = 'cat results/result_haktrails_'+self.domain+'.txt | httpx --silent >> results/result_httpx_'+self.domain+'.txt'
+        print("[*] Httpx execute process starting... [*]")
+        popen(enumerate_command)
+        popen(enumerate_command2)
+        print('[+] Httpx scan finished... See details on results/result_httpx_'+self.domain+'.txt [+]')
+
+    
+    def nuclei_attack(self):
+        enumerate_command = 'nuclei -l results/result_httpx_'+self.domain+'.txt -t ../nuclei-templates/ > results/result_nuclei_'+self.domain+'.txt'
+        print("[*] Nuclei attack execute process starting... [*]")
+        popen(enumerate_command)
+        print('[+] Nuclei attack finished... See details on results/result_nuclei_'+self.domain+'.txt [+]')
+    
 
 print("""\
-
 :'#######:::'######::'####:'##::: ##:'########:::::'######:::'######::'##::::::::'##::: ##::'#######::'########::
 '##.... ##:'##... ##:. ##:: ###:: ##:... ##..:::::'##... ##:'##... ##: ##:::'##:: ###:: ##:'##.... ##: ##.... ##:
  ##:::: ##: ##:::..::: ##:: ####: ##:::: ##::::::: ##:::..:: ##:::..:: ##::: ##:: ####: ##:..::::: ##: ##:::: ##:
@@ -44,6 +47,7 @@ print("""\
                                                                                  by: Israel C. dos Reis [@z3xddd]
     """)
 user_domain_input = str(input("[+] Enter domain to scan >>  [ EX: domain.com.br ]  "))
-user_log_input = str(input("[+] Store the output in a text file? [ Write (Y) / (y) or (N) / (n) ] >>  "))
-domain_to_scan = OsInT_Sc4N3r(user_domain_input, user_log_input)
-domain_to_scan.enumerate_subdomains()
+domain_to_scan = OsInT_Sc4N3r(user_domain_input)
+domain_to_scan.enumerate_subdomains_assetfinder()
+domain_to_scan.enumerate_webservers()
+domain_to_scan.nuclei_attack()
