@@ -32,9 +32,9 @@ class OsInT_Sc4N3r(object):
     def portscan(self):
         portscan_command = 'nmap -v -Pn -O -sV -p- -iL results/result_assetfinder_'+self.domain+'.txt > results/result_portscan_'+self.domain+'.txt'
         print("[*] Portscan execute process starting... [*]")
-        print(popen(portscan_command).read())
+        popen(portscan_command).read()
         print('[+] Portscan scan finished... See details on results/result_portscan_'+self.domain+'.txt [+]')   
-        
+
     def nuclei_attack(self):
         attack_command = 'nuclei -l results/result_httpx_'+self.domain+'.txt -t ../nuclei-templates/ > results/result_nuclei_'+self.domain+'.txt'
         print("[*] Nuclei attack execute process starting... [*]")
