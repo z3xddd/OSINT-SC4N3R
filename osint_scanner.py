@@ -13,22 +13,20 @@ class OsInT_Sc4N3r(object):
     def enumerate_subdomains_assetfinder(self):
         enumerate_command = 'assetfinder -subs-only '+self.domain+' >> results/result_assetfinder_'+self.domain+'.txt'
         print("[*] Assetfinder execute process starting... [*]")
-        popen(enumerate_command)
+        print(popen(enumerate_command).read())
         print('[+] Assetfinder scan finished... See details on results/result_assetfinder_'+self.domain+'.txt [+]')
 
     def enumerate_webservers(self):
         enumerate_command = 'cat results/result_assetfinder_'+self.domain+'.txt | httpx --silent > results/result_httpx_'+self.domain+'.txt'
-        enumerate_command2 = 'cat results/result_haktrails_'+self.domain+'.txt | httpx --silent >> results/result_httpx_'+self.domain+'.txt'
         print("[*] Httpx execute process starting... [*]")
-        popen(enumerate_command)
-        popen(enumerate_command2)
+        print(popen(enumerate_command).read())
         print('[+] Httpx scan finished... See details on results/result_httpx_'+self.domain+'.txt [+]')
 
     
     def nuclei_attack(self):
-        enumerate_command = 'nuclei -l results/result_httpx_'+self.domain+'.txt -t ../nuclei-templates/ > results/result_nuclei_'+self.domain+'.txt'
+        attack_command = 'nuclei -l results/result_httpx_'+self.domain+'.txt -t ../nuclei-templates/ > results/result_nuclei_'+self.domain+'.txt'
         print("[*] Nuclei attack execute process starting... [*]")
-        popen(enumerate_command)
+        print(popen(attack_command).read())
         print('[+] Nuclei attack finished... See details on results/result_nuclei_'+self.domain+'.txt [+]')
     
 
