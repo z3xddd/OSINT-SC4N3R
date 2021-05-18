@@ -3,7 +3,7 @@
 # OsInT Sc4N3r - Tool for automated recon process on bug bounty
 # @author: Israel C. dos Reis [@z3xddd]
 
-from os import popen, geteuid, sysconf
+from os import popen, geteuid
 from time import sleep
 
 class OsInT_Sc4N3r(object):
@@ -17,8 +17,20 @@ class OsInT_Sc4N3r(object):
         else:
             pass
 
+    def create_folder_results(self):
+        validate_folder_command = "ls -la"
+        validate_var = popen(validate_folder_command).read()
+        if "results" in validate_var:
+            pass
+        else:
+            results_command = 'mkdir results'
+            print('[+] Creating folder /results to archive logs... [+]')
+            popen(results_command)
+            print('[+] Folder created... [+]')
+
+
     def enumerate_subdomains_assetfinder(self):
-        enumerate_command = 'assetfinder -subs-only '+self.domain+' >> results/result_assetfinder_'+self.domain+'.txt'
+        enumerate_command = 'assetfinder -subs-only '+self.domain+' > results/result_assetfinder_'+self.domain+'.txt'
         print("[*] Assetfinder execute process starting... [*]")
         print(popen(enumerate_command).read())
         print('[+] Assetfinder scan finished... See details on results/result_assetfinder_'+self.domain+'.txt [+]')
@@ -59,6 +71,7 @@ print("""\
 user_domain_input = str(input("[+] Enter domain to scan >>  [ EX: domain.com.br ]  "))
 domain_to_scan = OsInT_Sc4N3r(user_domain_input)
 domain_to_scan.validate_run_as_root()
+domain_to_scan.create_folder_results()
 domain_to_scan.enumerate_subdomains_assetfinder()
 domain_to_scan.portscan()
 domain_to_scan.enumerate_webservers()
