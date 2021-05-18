@@ -4,7 +4,6 @@
 # @author: Israel C. dos Reis [@z3xddd]
 
 from os import popen, geteuid
-from time import sleep
 
 class OsInT_Sc4N3r(object):
     def __init__(self, domain):
