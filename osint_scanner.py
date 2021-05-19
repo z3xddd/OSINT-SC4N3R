@@ -44,7 +44,25 @@ class OsInT_Sc4N3r(object):
         portscan_command = 'nmap -v -Pn -O -sV -p- -iL results/result_assetfinder_'+self.domain+'.txt > results/result_portscan_'+self.domain+'.txt'
         print("[*] Portscan execute process starting... [*]")
         popen(portscan_command).read()
-        print('[+] Portscan scan finished... See details on results/result_portscan_'+self.domain+'.txt [+]')   
+        print('[+] Portscan scan finished... See details on results/result_portscan_'+self.domain+'.txt [+]')
+
+    def search_json(self):
+        search_json_command = 'cat results/result_assetfinder_'+self.domain+'.txt |  waybackurls | grep -E "\.json(?:onp?)?$" | anew > results/result_search_json_'+self.domain+'.txt'
+        print("[*] Search .json files execute process starting... [*]")
+        popen(search_json_command).read()
+        print('[+] Scan finished... See details on results/result_search_json_'+self.domain+'.txt [+]')
+
+    def search_js(self):
+        search_js_command = 'cat results/result_assetfinder_'+self.domain+'.txt |  waybackurls | grep -E "\.js(?:onp?)?$" | anew > results/result_search_js_'+self.domain+'.txt'
+        print("[*] Search .js files execute process starting... [*]")
+        popen(search_js_command).read()
+        print('[+] Scan finished... See details on results/result_search_js_'+self.domain+'.txt [+]')
+
+    def xss_scan(self):
+        xss_command = 'cat results/result_assetfinder_'+self.domain+'.txt |  waybackurls | kxss > results/result_xss_scan_'+self.domain+'.txt'
+        print("[*] XSS Scan execute process starting... [*]")
+        popen(xss_command).read()
+        print('[+] XSS Scan finished... See details on results/result_xss_scan_'+self.domain+'.txt [+]')
 
     def nuclei_attack(self):
         attack_command = 'nuclei -l results/result_httpx_'+self.domain+'.txt -t ../nuclei-templates/ > results/result_nuclei_'+self.domain+'.txt'
@@ -72,6 +90,9 @@ domain_to_scan = OsInT_Sc4N3r(user_domain_input)
 domain_to_scan.validate_run_as_root()
 domain_to_scan.create_folder_results()
 domain_to_scan.enumerate_subdomains_assetfinder()
+domain_to_scan.search_json()
+domain_to_scan.search_js()
+domain_to_scan.xss_scan()
 domain_to_scan.portscan()
 domain_to_scan.enumerate_webservers()
 domain_to_scan.nuclei_attack()
