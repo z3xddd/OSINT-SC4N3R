@@ -41,7 +41,7 @@ class OsInT_Sc4N3r(object):
         print('[+] Httpx scan finished... See details on results/result_httpx_'+self.domain+'.txt [+]')
 
     def portscan(self):
-        portscan_command = 'nmap -v -Pn -O -sV -p- -iL results/result_assetfinder_'+self.domain+'.txt > results/result_portscan_'+self.domain+'.txt'
+        portscan_command = 'nmap -sSV -n -f -Pn T 3 --script=/usr/share/nmap/scripts/firewall-bypass.nse --allports --randomize-hosts --data-length 127 -iL results/result_assetfinder_'+self.domain+'.txt > results/result_portscan_'+self.domain+'.txt'
         print("[*] Portscan execute process starting... [*]")
         popen(portscan_command).read()
         print('[+] Portscan scan finished... See details on results/result_portscan_'+self.domain+'.txt [+]')
